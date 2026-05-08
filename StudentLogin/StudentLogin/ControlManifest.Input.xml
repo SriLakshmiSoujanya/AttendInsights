@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="au.AttendInsights"
+           constructor="StudentDashboard"
+           version="9.0.0"
+           display-name-key="StudentDashboard"
+           description-key="Technical Hub Professional Student Dashboard"
+           control-type="standard">
+
+    <property name="RollNumber"
+              display-name-key="RollNumber"
+              description-key="Student Roll Number (maps to roll_no)"
+              of-type="SingleLine.Text"
+              usage="bound"
+              required="false" />
+
+    <property name="Sessions"
+              display-name-key="Sessions"
+              description-key="Total Sessions (maps to sessions)"
+              of-type="Whole.None"
+              usage="bound"
+              required="false" />
+
+    <property name="Attended"
+              display-name-key="Attended"
+              description-key="Attended Sessions (maps to attended)"
+              of-type="Whole.None"
+              usage="bound"
+              required="false" />
+
+    <property name="Percentage"
+              display-name-key="Percentage"
+              description-key="Attendance Percentage (maps to percentage)"
+              of-type="Decimal"
+              usage="bound"
+              required="false" />
+
+    <!-- Pass the full daily JSON from Power Apps:
+         JSON(Filter(Attendance, roll_no=varStudent.roll_no)) -->
+    <property name="DailyData"
+              display-name-key="DailyData"
+              description-key="JSON string of daily attendance for this student"
+              of-type="Multiple"
+              usage="bound"
+              required="false" />
+
+    <resources>
+      <code path="index.ts" order="1"/>
+    </resources>
+
+    <feature-usage>
+      <uses-feature name="Utility" required="false"/>
+    </feature-usage>
+  </control>
+</manifest>
