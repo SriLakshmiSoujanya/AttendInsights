@@ -38,45 +38,47 @@ The project is divided into three main decoupled modules:
 ### Architecture Flowchart
 
 ```mermaid
-graph TD
-    subgraph Web Interface
-        React["💻 React Dashboard<br/>(Student & Admin Portals)"]
-    end
-
-    subgraph API Backend
-        Express["🚀 Node.js + Express<br/>(server.js)"]
-        JSON[("🗄️ JSON Data<br/>(users_data.json, attendance_data.json)")]
-    end
-
-    subgraph Automated AI Email Engine
-        Flask["🐍 Python + Flask<br/>(Backend.py)"]
-        PowerAutomate["⚙️ Microsoft Power Automate<br/>(Triggers via /run-now)"]
-        Excel[("📊 Raw Excel Data<br/>(attendance.xlsx, students.xlsx)")]
-        Groq["🧠 Groq API<br/>(Llama-3.3-70b-versatile)"]
-        SMTP["📧 SMTP Server<br/>(Gmail)"]
-    end
-
-    %% Connections
-    React <-->|REST API / JWT| Express
-    Express <-->|Reads/Writes| JSON
+graph LR
+    %% Nodes
+    A["📁 Attendance Data Collection<br/>Excel / SharePoint / Student Records"]
+    B["⚙️ Data Processing<br/>Python + Pandas + JSON Conversion"]
+    C["🗄️ Secure Data Storage<br/>Central Attendance Database"]
     
-    PowerAutomate -->|Triggers Schedule| Flask
-    Flask -->|Reads/Parses| Excel
-    Flask <-->|Prompts & Context| Groq
-    Flask -->|Sends AI Notifications| SMTP
-
-    %% Styling
-    classDef react fill:#61dafb,stroke:#000,stroke-width:2px,color:#000;
-    classDef node fill:#68a063,stroke:#000,stroke-width:2px,color:#fff;
-    classDef python fill:#ffd43b,stroke:#000,stroke-width:2px,color:#000;
-    classDef ai fill:#f97316,stroke:#000,stroke-width:2px,color:#fff;
-    classDef trigger fill:#0078d4,stroke:#000,stroke-width:2px,color:#fff;
+    D["🔐 Login System<br/>Admin / Student Authentication"]
+    E{"👤 User Access"}
     
-    class React react;
-    class Express node;
-    class Flask python;
-    class Groq ai;
-    class PowerAutomate trigger;
+    F["📊 Admin Dashboard<br/>Analytics + Reports + Student Monitoring"]
+    G["👨‍🎓 Student Dashboard<br/>Personal Attendance + Insights"]
+    
+    H["🤖 AI Engine<br/>Groq API + LLaMA Model"]
+    I["📩 Power Automate<br/>Email Alerts to Students / Mentors"]
+    
+    J["🎯 Smart Decision Making<br/>Attendance Improvement + Notifications"]
+
+    %% Edges
+    A --> B
+    B --> C
+    
+    C --> D
+    C --> H
+    C --> I
+    
+    D --> E
+    
+    E --> F
+    E --> G
+    
+    F --> J
+    G --> J
+    H --> J
+    I --> J
+
+    %% Styling to match the provided dark theme image
+    classDef darkBox fill:#222,stroke:#555,stroke-width:1px,color:#fff,rx:4,ry:4;
+    classDef diamondBox fill:#222,stroke:#555,stroke-width:1px,color:#fff;
+    
+    class A,B,C,D,F,G,H,I,J darkBox;
+    class E diamondBox;
 ```
 
 ---
