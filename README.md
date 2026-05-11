@@ -35,52 +35,48 @@ The project is divided into three main decoupled modules:
 2. **Dashboard API Backend**: A Node.js + Express server (`server.js`) that processes frontend requests, handles login sessions, and serves JSON data.
 3. **Automated AI Email Engine**: A Python + Flask application (`Backend.py`) that reads raw Excel data (`attendance.xlsx`, `students.xlsx`), uses the Groq API to generate contextual email content, and sends them out via SMTP. It runs on a scheduled background thread.
 
-### Architecture Flowchart
 
-```mermaid
-graph LR
-    %% Nodes
-    A["📁 Attendance Data Collection<br/>Excel / SharePoint / Student Records"]
-    B["⚙️ Data Processing<br/>Python + Pandas + JSON Conversion"]
-    C["🗄️ Secure Data Storage<br/>Central Attendance Database"]
-    
-    D["🔐 Login System<br/>Admin / Student Authentication"]
-    E{"👤 User Access"}
-    
-    F["📊 Admin Dashboard<br/>Analytics + Reports + Student Monitoring"]
-    G["👨‍🎓 Student Dashboard<br/>Personal Attendance + Insights"]
-    
-    H["🤖 AI Engine<br/>Groq API + LLaMA Model"]
-    I["📩 Power Automate<br/>Email Alerts to Students / Mentors"]
-    
-    J["🎯 Smart Decision Making<br/>Attendance Improvement + Notifications"]
-
-    %% Edges
-    A --> B
-    B --> C
-    
-    C --> D
-    C --> H
-    C --> I
-    
-    D --> E
-    
-    E --> F
-    E --> G
-    
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-
-    %% Styling to match the provided dark theme image
-    classDef darkBox fill:#222,stroke:#555,stroke-width:1px,color:#fff,rx:4,ry:4;
-    classDef diamondBox fill:#222,stroke:#555,stroke-width:1px,color:#fff;
-    
-    class A,B,C,D,F,G,H,I,J darkBox;
-    class E diamondBox;
-```
-
+┌───────────────────────────────────────────────┐
+│ 📁 ATTENDANCE DATA COLLECTION                 │
+│ Excel / SharePoint / Student Records         │
+└───────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────┐
+│ ⚙️ DATA PROCESSING                            │
+│ Python + Pandas + JSON Conversion            │
+└───────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────┐
+│ 🗄️ SECURE DATA STORAGE                        │
+│ Central Attendance Database                  │
+└───────────────────────────────────────────────┘
+              │                    │                     │
+              ▼                    ▼                     ▼
+┌───────────────────────┐   ┌───────────────────────┐   ┌──────────────────────────┐
+│ 🔐 LOGIN SYSTEM        │   │ 🤖 AI ENGINE          │   │ 📧 POWER AUTOMATE         │
+│ Admin / Student Auth   │   │ Groq API + LLaMA      │   │ Email Alerts to Students │
+└───────────────────────┘   └───────────────────────┘   │ / Mentors                │
+              │                                          └──────────────────────────┘
+              ▼
+       ┌───────────────┐
+       │ 👤 USER ACCESS │
+       └───────────────┘
+          │         │
+          ▼         ▼
+┌───────────────────────┐   ┌──────────────────────────┐
+│ 📊 ADMIN DASHBOARD     │   │ 🎓 STUDENT DASHBOARD     │
+│ Analytics + Reports +  │   │ Personal Attendance +    │
+│ Student Monitoring     │   │ Insights                 │
+└───────────────────────┘   └──────────────────────────┘
+          │                         │
+          └──────────┬──────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────┐
+│ 🎯 SMART DECISION MAKING                                 │
+│ Attendance Improvement + Notifications + Insights        │
+└──────────────────────────────────────────────────────────┘
 ---
 
 ## 🚀 Step-by-Step Setup Guide
