@@ -1,230 +1,251 @@
-<<<<<<< HEAD
-**AttendInsights** – AI-Powered Student Attendance Monitoring & Notification System
+# 📊 Attendance Tracker - Student Performance Management System
 
-Intelligent attendance tracking, automated communication, and AI-driven academic insights for students, mentors, and administrators.
+A comprehensive web-based attendance tracking system with AI-powered insights, role-based authentication, and data visualization capabilities.
 
-**📌 Overview**
+## 🚀 Features
 
-AttendInsights is a smart attendance monitoring platform designed for educational institutions to modernize attendance management through Web Development + Workflow Automation + Artificial Intelligence.
+### 🔐 Authentication & Security
+- **Role-based access control** (Admin/Student)
+- **JWT authentication** with secure token management
+- **bcryptjs password hashing** for secure credential storage
+- **Session persistence** with localStorage
 
-**The platform uses**:
-Frontend Web Dashboard → HTML, CSS, JavaScript
-Automation Engine → Microsoft Power Automate
-AI Engine → Groq API + LLaMA Model
-Data Layer → Excel / SharePoint / Institutional Dataset
-Communication Layer → Outlook / Microsoft 365
-
-It helps institutions proactively monitor attendance, identify at-risk students, automate mentor communication, and provide personalized attendance insights.
-
-**🚀 Key Features**
-**👨‍🎓 Student Module**
-Secure student login
-Personalized attendance dashboard
-Attendance percentage tracking
-AI-generated performance insights
-Automated warning or appreciation emails
-**👨‍💼 Admin Module**
-Secure admin login
-Institution-wide attendance dashboard
-At-risk student identification
-Attendance analytics and trends
-Automated mentor notifications
-**🤖 AI-Powered Intelligence**
-Groq API + LLaMA integration
-Context-aware attendance analysis
-Personalized recommendations
-Dynamic email drafting for:
-Low attendance warnings
-High attendance appreciation
-Mentor alerts
-
-
-**🔄 Workflow Automation**
-Automated attendance calculations
-Threshold monitoring
-Continuous absence alerts
-Scheduled notifications using Power Automate
-
-**🛠️ Tech Stack**
-Layer	Technology
-Frontend	HTML, CSS, JavaScript
-Backend Automation	Microsoft Power Automate
-AI Integration	Groq API + LLaMA
-Data Storage	Excel / SharePoint
-Email System	Outlook / Microsoft 365
-
-
-**🏗️ System Architecture**
-**Layer 1:** Frontend
- ┣ Login Page
- ┣ Student Dashboard
- ┗ Admin Dashboard
-
-**Layer 2:** Data Layer
- ┣ Excel Dataset
- ┗ SharePoint Dataset
-
-**Layer 3:** Automation Layer
- ┗ Power Automate Workflows
-
-**Layer 4:** AI Layer
- ┗ Groq API + LLaMA Model
-
-**Layer 5**: Communication Layer
- ┗ Outlook / Microsoft 365
-❗ Problem Statement
-
-
-**Traditional attendance systems often rely on:**
-
-Manual monitoring
-Delayed intervention
-Static dashboards
-Limited personalized communication
-
-**This leads to:**
-
-Reduced student engagement
-Delayed mentor action
-Poor institutional visibility into attendance risks
-
-
-**💡 Proposed Solution**
-
-**AttendInsights transforms traditional attendance systems into an AI-enhanced proactive ecosystem by:**
-
-Automating attendance calculations
-Delivering personalized AI insights
-Sending contextual alerts
-Providing admin-level analytics
-Improving mentor-student communication
-
-**📂 Functional Requirements**
-Data Management
-Centralized student attendance records
-Roll number, attended sessions, total sessions
-Percentage calculation
-Role-based access
-Dashboards
-Student Dashboard
-Admin Dashboard
-Login Authentication
-Communication
-Warning Emails
-Appreciation Emails
-Mentor Notifications
-
-**🔒 Non-Functional Requirements**
-Microsoft Power Automate Access
-Groq API Key
-LLaMA Model Integration
-Outlook / Microsoft 365
-Internet Connectivity
-Excel / SharePoint Dataset
-
-**📈 Scope**
-
-**In Scope**
-Student/Admin Login
-AI Attendance Insights
-Dashboard Analytics
-Automated Emails
-Web Deployment
-
-**Out of Scope**
-Biometric Attendance
-RFID
-Parent App
-WhatsApp/SMS
-ERP Full Integration
-
-**🔮 Future Enhancements**
-Predictive attendance forecasting
-Parent dashboard
-LMS/ERP integration
-Mobile application
-Multi-language AI support
-Live API data sync
-
-**📷 Project Type**
-
-Education SaaS | Web Application | AI + Automation Platform
-
-**📦 Installation & Setup**
-1. Clone the repository
-git clone https://github.com/SriLakshmiSoujanya/AttendInsights.git
-
-2. Open frontend files in browser / local server
-
-3. Configure:
-   - Power Automate workflows
-   - Groq API key
-   - LLaMA integration
-   - Outlook email connection
-   - Excel/SharePoint dataset
-
-4. Deploy dashboards
-🌐 GitHub Repository
-
-**Repository:**
-https://github.com/SriLakshmiSoujanya/AttendInsights
-
-**📍 Conclusion**
-
-AttendInsights combines web development, AI intelligence, and automation to create a scalable academic monitoring ecosystem. It empowers institutions with actionable attendance intelligence while improving student accountability and mentor responsiveness.
-
-⭐ If you found this project useful, consider starring the repository!
-=======
-# 🎓 Attendance Tracking System - Complete Setup Guide
-
-> A comprehensive web-based student attendance tracking system with AI-powered insights and Power Automate integration for automated email notifications.
-
----
-
-## 📋 Table of Contents
-
-1. [Features](#features)
-2. [System Requirements](#system-requirements)
-3. [Installation & Setup](#installation--setup)
-4. [Quick Start](#quick-start)
-5. [Usage Guide](#usage-guide)
-6. [API Reference](#api-reference)
-7. [Troubleshooting](#troubleshooting)
-8. [Architecture](#architecture)
-
----
-
-## ✨ Features
-
-### 🔐 Authentication & Authorization
-- Secure JWT-based authentication
-- Role-based access control (Admin/Student)
-- Password hashing with bcryptjs
-- Session persistence with localStorage
-- 7-day token expiration
-- Auto-logout functionality
-
-### 👨‍💼 Admin Dashboard
-- 📊 Real-time statistics overview
-  - Total students: 136
-  - Low attendance students: 8 (< 75%)
-  - High attendance students: 50 (≥ 90%)
-  - Average attendance: 87.46%
-- 📋 Low attendance student list
-- 📈 Complete student attendance table
-- 🎯 Identify intervention candidates
-- 📧 Integrate with Power Automate for emails
+### 📊 Admin Dashboard
+- **Real-time statistics**: Total students, attendance percentages, low/high performers
+- **Student search & analysis** with detailed performance metrics
+- **Low attendance alerts** with critical student monitoring
+- **AI-powered admin assistant** for student queries and insights
+- **Interactive data visualization** with Chart.js integration
 
 ### 👨‍🎓 Student Dashboard
-- 📊 Personal attendance statistics
-- 📈 Visual attendance progress bar
-- 📅 Interactive 30-day attendance calendar
-- 🎯 Track missing sessions
-- 🤖 AI-powered personalized insights
+- **Personal attendance overview** with detailed statistics
+- **Daily attendance calendar** (last 30 days)
+- **Performance charts** (Monthly/Weekly trends)
+- **Holiday & weekend attendance tracking**
+- **AI attendance assistant** for personalized insights
+- **Automated recommendations** based on attendance patterns
 
-### 🤖 AI Insights Engine
-- Attendance level assessment
-  - 🟢 Excellent (≥ 90%)
+### 🤖 AI-Powered Features
+- **Natural language processing** for attendance queries
+- **Smart insights** and recommendations
+- **Date-specific attendance queries** (e.g., "Was student X present on date Y?")
+- **Pattern analysis** and predictive insights
+- **Quick action buttons** for common queries
+
+### 📈 Data Visualization
+- **Interactive charts** using Chart.js
+- **Calendar-based attendance history**
+- **Performance trend analysis**
+- **Holiday/weekend attendance statistics**
+- **Responsive design** for all devices
+
+## 🛠️ Technology Stack
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **JWT (jsonwebtoken)** - Authentication tokens
+- **bcryptjs** - Password hashing
+- **CORS** - Cross-origin resource sharing
+
+### Frontend
+- **HTML5/CSS3** - Structure and styling
+- **Vanilla JavaScript** - Client-side logic
+- **Chart.js** - Data visualization
+- **Fetch API** - HTTP requests
+- **localStorage** - Client-side storage
+
+### Data Processing
+- **Python/Pandas** - Excel data processing
+- **JSON** - Data storage format
+
+## 📋 Prerequisites
+
+- **Node.js** (v14 or higher)
+- **npm** or **yarn**
+- **Python** (for data processing)
+- **Modern web browser**
+
+## 🚀 Installation & Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/attendance-tracker.git
+cd attendance-tracker
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Process Excel Data (Optional)
+If you have new Excel files to process:
+```bash
+python export_data.py
+```
+
+### 4. Start the Server
+```bash
+node server.js
+```
+
+### 5. Access the Application
+Open your browser and navigate to: `http://localhost:5000`
+
+## 🔑 Demo Credentials
+
+### Admin Access
+- **Email:** `admin@institution.edu`
+- **Password:** `admin123`
+
+### Student Access
+- **Email:** Any student email from the data (e.g., `23A91A1293@aec.edu.in`)
+- **Password:** `student123`
+
+## 📊 API Endpoints
+
+### Authentication
+- `POST /api/login` - User authentication
+- `POST /api/register` - User registration
+
+### Dashboard Data
+- `GET /api/dashboard` - Admin dashboard statistics
+- `GET /api/student-dashboard` - Student personal data
+- `GET /api/students` - All students list
+- `GET /api/student/:rollNo` - Specific student details
+
+### AI Features
+- `POST /api/admin-ai-chat` - Admin AI assistant
+- `POST /api/student-ai-chat` - Student AI assistant
+- `GET /api/student-analysis/:rollNo` - Student analysis with charts
+
+## 📁 Project Structure
+
+```
+attendance-tracker/
+├── server.js                 # Express server
+├── index.html               # Main application
+├── attendance_data.json     # Student attendance data
+├── users_data.json         # User credentials
+├── export_data.py          # Excel processing script
+├── read_excel.py           # Data analysis script
+├── package.json            # Dependencies
+└── README.md              # Documentation
+```
+
+## 🎯 Usage Guide
+
+### For Administrators
+1. **Login** with admin credentials
+2. **View dashboard** statistics and alerts
+3. **Search students** by roll number for detailed analysis
+4. **Use AI assistant** to query student information
+5. **Monitor low attendance** students and take action
+
+### For Students
+1. **Login** with your student email
+2. **View personal attendance** statistics
+3. **Check daily attendance** history
+4. **Use AI assistant** for attendance-related queries
+5. **Monitor performance** trends and insights
+
+## 🤖 AI Features Examples
+
+### Admin AI Queries
+- "Tell me about student 23A91A1293"
+- "Show me students with attendance below 75%"
+- "How many students were absent on 2026-02-15?"
+- "What is the average attendance for Data Specialist program?"
+
+### Student AI Queries
+- "What is my current attendance percentage?"
+- "How many classes have I missed this month?"
+- "When was my last absence?"
+- "Give me tips to improve my attendance"
+
+## 📊 Data Format
+
+### Attendance Data Structure
+```json
+{
+  "rollNo": "23A91A1293",
+  "studentName": "Kancharla V V S L Sowjanya",
+  "email": "23A91A1293@aec.edu.in",
+  "technology": "Data Specialist",
+  "college": "IT",
+  "totalSessions": 203,
+  "attendedSessions": 181,
+  "attendancePercentage": 89.16,
+  "dailyAttendance": {
+    "2026-02-15": "Present",
+    "2026-02-16": "Absent"
+  }
+}
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+Create a `.env` file in the root directory:
+```env
+PORT=5000
+JWT_SECRET=your-secret-key-here
+NODE_ENV=development
+```
+
+### Server Configuration
+Modify `server.js` for custom settings:
+- **Port:** Change the listening port
+- **CORS:** Configure allowed origins
+- **JWT:** Set token expiration time
+
+## 🚀 Deployment
+
+### Production Build
+```bash
+# Install production dependencies only
+npm ci --only=production
+
+# Start the server
+npm start
+```
+
+### Environment Setup
+- Set `NODE_ENV=production`
+- Configure proper JWT secrets
+- Set up reverse proxy (nginx/apache)
+- Enable HTTPS
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue on GitHub
+- Check the documentation
+- Review the code comments
+
+## 🎉 Acknowledgments
+
+- Built with modern web technologies
+- Inspired by educational management systems
+- Data visualization powered by Chart.js
+- AI insights for better student outcomes
+
+---
+
+**Developed with ❤️ for educational excellence**
   - 🟡 Medium (75-85%)
   - 🔴 Critical (< 75%)
 - Pattern detection
@@ -823,4 +844,3 @@ This project is for educational purposes.
 ---
 
 **Ready to start?** → Run `npm start` and open http://localhost:5000!
->>>>>>> b45c35e (Added codes)
