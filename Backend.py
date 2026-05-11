@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 from flask import Flask, jsonify
 import pandas as pd
 import smtplib
@@ -13,9 +17,12 @@ from datetime import datetime, date
 app = Flask(__name__)
 
 # ── CONFIG ─────────────────────────────────────────────────
-GROQ_API_KEY  = "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"
-FROM_EMAIL    = "l06684073@gmail.com"
-APP_PASSWORD  = "kuuubtduldykynsn"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+FROM_EMAIL = os.getenv("FROM_EMAIL")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
+
+if not all([GROQ_API_KEY, FROM_EMAIL, APP_PASSWORD]):
+    raise EnvironmentError("Missing required environment variables!")
 MENTOR_EMAIL  = "23p31a4241@acet.ac.in"
 
 # Time to send emails daily (24hr format)
