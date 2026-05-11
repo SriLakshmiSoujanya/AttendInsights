@@ -35,6 +35,50 @@ The project is divided into three main decoupled modules:
 2. **Dashboard API Backend**: A Node.js + Express server (`server.js`) that processes frontend requests, handles login sessions, and serves JSON data.
 3. **Automated AI Email Engine**: A Python + Flask application (`Backend.py`) that reads raw Excel data (`attendance.xlsx`, `students.xlsx`), uses the Groq API to generate contextual email content, and sends them out via SMTP. It runs on a scheduled background thread.
 
+### Architecture Flowchart
+
+```mermaid
+graph TD
+    subgraph Web Interface
+        React["💻 React Dashboard<br/>(Student & Admin Portals)"]
+    end
+
+    subgraph API Backend
+        Express["🚀 Node.js + Express<br/>(server.js)"]
+        JSON[("🗄️ JSON Data<br/>(users_data.json, attendance_data.json)")]
+    end
+
+    subgraph Automated AI Email Engine
+        Flask["🐍 Python + Flask<br/>(Backend.py)"]
+        PowerAutomate["⚙️ Microsoft Power Automate<br/>(Triggers via /run-now)"]
+        Excel[("📊 Raw Excel Data<br/>(attendance.xlsx, students.xlsx)")]
+        Groq["🧠 Groq API<br/>(Llama-3.3-70b-versatile)"]
+        SMTP["📧 SMTP Server<br/>(Gmail)"]
+    end
+
+    %% Connections
+    React <-->|REST API / JWT| Express
+    Express <-->|Reads/Writes| JSON
+    
+    PowerAutomate -->|Triggers Schedule| Flask
+    Flask -->|Reads/Parses| Excel
+    Flask <-->|Prompts & Context| Groq
+    Flask -->|Sends AI Notifications| SMTP
+
+    %% Styling
+    classDef react fill:#61dafb,stroke:#000,stroke-width:2px,color:#000;
+    classDef node fill:#68a063,stroke:#000,stroke-width:2px,color:#fff;
+    classDef python fill:#ffd43b,stroke:#000,stroke-width:2px,color:#000;
+    classDef ai fill:#f97316,stroke:#000,stroke-width:2px,color:#fff;
+    classDef trigger fill:#0078d4,stroke:#000,stroke-width:2px,color:#fff;
+    
+    class React react;
+    class Express node;
+    class Flask python;
+    class Groq ai;
+    class PowerAutomate trigger;
+```
+
 ---
 
 ## 🚀 Step-by-Step Setup Guide
