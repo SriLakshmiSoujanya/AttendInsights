@@ -1,97 +1,163 @@
-# AttendInsights
+# 📊 AttendInsights
 
-## Description
-AttendInsights is an intelligent student attendance monitoring and notification platform designed to help educational institutions proactively track attendance, automate communication, and deliver AI-powered insights to students, mentors, and administrators. The system combines modern web development using React and Node.js for the frontend and API, Python for data processing, Power Automate for workflow orchestration, and Groq API with the LLaMA model for contextual AI-generated insights and automated email communication.
+AttendInsights is a comprehensive, AI-powered student attendance tracking, analytics, and automated communication platform. Designed for academic institutions and mentors, it brings modern web technologies and advanced Generative AI together to seamlessly monitor student attendance, detect irregular patterns, provide personalized insights, and automate email communications.
 
-## GitHub Link
-[https://github.com/SriLakshmiSoujanya/AttendInsights](https://github.com/SriLakshmiSoujanya/AttendInsights)
+## 🌟 Key Features
 
-## Functional Requirements
+### 🖥️ Modern React Dashboard (Frontend)
+- **Role-Based Access**: Dedicated portals for both **Students** and **Admins**.
+- **Student Portal**: Shows daily attendance, performance metrics, and missing sessions.
+- **Admin Portal**: Allows admins to search individual student records, view low attendance lists, and monitor overall batch statistics.
+- **AI Attendance Assistant**: A built-in chat interface where students and admins can ask questions like *"What is my current attendance percentage?"* or *"Which students need intervention?"*
+- **Data Visualization**: Rich Monthly and Weekly trend charts built using `react-chartjs-2`.
+- **Premium UI**: Designed with glassmorphism, tailored HSL color palettes, and fluid animations for an exceptional user experience.
 
-**Data Management:**
-• Centralized attendance data storage using Microsoft Excel datasets and JSON storage.
-• Student records include roll number, attendance sessions, attended sessions, percentage, and role-based access.
+### ⚙️ Node.js Express API (Backend)
+- A robust REST API (`server.js`) handling user authentication via JWT.
+- Serves endpoints for fetching dashboard data, charts, holiday statistics, and powering the AI Assistant responses.
+- Manages cross-origin resource sharing (CORS) and seamless connection to the React frontend.
 
-**Frontend Interface:**
-• Web-based frontend built using React (Vite), CSS Glassmorphism, and Chart.js.
-• Dedicated Student Dashboard for personalized attendance insights and visual charts.
-• Dedicated Admin Dashboard for institution-wide monitoring and tracking at-risk students.
-• Dynamic login module with Student/Admin role selection via JWT authentication.
+### 🤖 AI-Powered Email Automation (`Backend.py`)
+- Integrated with **Power Automate** and **Groq (Llama-3.3-70b-versatile)** to automatically generate and send hyper-personalized daily emails.
+- **Flows Executed Daily**:
+  - **Flow 2 (Daily Email)**: Sends personalized *Warning*, *Reminder*, or *Appreciation* emails to students based on their attendance percentage.
+  - **Flow 3 (Streak Alert)**: Detects consecutive absences (e.g., exactly 3 or 5 days) and immediately alerts parents/mentors.
+  - **Flow 4 (Pattern Detection)**: Analyzes the last 4 weeks to see if a student consistently misses a specific weekday (e.g., absent on 3 consecutive Mondays) and advises the mentor.
+  - **Flow 5 (Daily Mentor Summary)**: Compiles a brief daily report of all absent and at-risk students, sending it directly to the mentor.
 
-**Attendance Monitoring & AI Insights:**
-• Automated attendance tracking and pattern detection using Python and Pandas.
-• AI-powered insights and email drafting using Groq API + LLaMA model.
-• Student dashboard displays personalized AI-generated attendance insights.
-• Admin dashboard displays aggregate institutional insights, low attendance alerts, and interactive AI chat for analysis.
+---
 
-**Automated Communication:**
-• Warning emails for students falling below the 75% attendance threshold.
-• Appreciation emails for high-performing students.
-• Daily mentor summaries and urgent streak alerts for at-risk students.
-• Context-aware AI-generated messaging sent via SMTP (Gmail).
+## 🏗️ System Architecture
 
-## Non-Functional Requirements
-• Microsoft Power Automate access for external workflow triggering.
-• Groq API Key.
-• LLaMA model integration.
-• SMTP email services (Gmail configured).
-• Node.js and Python deployment environments.
-• Excel for raw data source.
-• Internet connectivity for cloud automation.
+The project is divided into three main decoupled modules:
 
-## Problem Statement
-Traditional attendance systems rely heavily on manual reporting, delayed intervention, and static dashboards. Institutions often lack personalized student insights, proactive mentor communication, and scalable AI-assisted intervention. This creates delayed academic support and limited visibility into attendance trends.
+1. **Frontend**: React application built with Vite. Communicates exclusively with the Node.js API.
+2. **Dashboard API Backend**: A Node.js + Express server (`server.js`) that processes frontend requests, handles login sessions, and serves JSON data.
+3. **Automated AI Email Engine**: A Python + Flask application (`Backend.py`) that reads raw Excel data (`attendance.xlsx`, `students.xlsx`), uses the Groq API to generate contextual email content, and sends them out via SMTP. It runs on a scheduled background thread.
 
-## Proposed Solution
-AttendInsights delivers a web-based AI-powered attendance intelligence platform that integrates React dashboards, Node.js API services, Python-based automation, and large language model insights. Students receive personalized attendance analysis, admins monitor institutional health, and mentors receive automated AI-driven intervention alerts.
 
-## Technologies Used
-React 19, Vite, Node.js, Express, Python, Flask, Pandas, Schedule, Smtplib, Power Automate, Groq API, LLaMA Model, Microsoft Excel
+┌───────────────────────────────────────────────┐
+│ 📁 ATTENDANCE DATA COLLECTION                 │
+│ Excel / SharePoint / Student Records         │
+└───────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────┐
+│ ⚙️ DATA PROCESSING                            │
+│ Python + Pandas + JSON Conversion            │
+└───────────────────────────────────────────────┘
+                        │
+                        ▼
+┌───────────────────────────────────────────────┐
+│ 🗄️ SECURE DATA STORAGE                        │
+│ Central Attendance Database                  │
+└───────────────────────────────────────────────┘
+              │                    │                     │
+              ▼                    ▼                     ▼
+┌───────────────────────┐   ┌───────────────────────┐   ┌──────────────────────────┐
+│ 🔐 LOGIN SYSTEM        │   │ 🤖 AI ENGINE          │   │ 📧 POWER AUTOMATE         │
+│ Admin / Student Auth   │   │ Groq API + LLaMA      │   │ Email Alerts to Students │
+└───────────────────────┘   └───────────────────────┘   │ / Mentors                │
+              │                                          └──────────────────────────┘
+              ▼
+       ┌───────────────┐
+       │ 👤 USER ACCESS │
+       └───────────────┘
+          │         │
+          ▼         ▼
+┌───────────────────────┐   ┌──────────────────────────┐
+│ 📊 ADMIN DASHBOARD     │   │ 🎓 STUDENT DASHBOARD     │
+│ Analytics + Reports +  │   │ Personal Attendance +    │
+│ Student Monitoring     │   │ Insights                 │
+└───────────────────────┘   └──────────────────────────┘
+          │                         │
+          └──────────┬──────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────┐
+│ 🎯 SMART DECISION MAKING                                 │
+│ Attendance Improvement + Notifications + Insights        │
+└──────────────────────────────────────────────────────────┘
+---
 
-## System Architecture
+## 🚀 Step-by-Step Setup Guide
 
-**Layer 1 — Frontend:**
-• Login Page
-• Student Module (Charts, Stats, AI Chat)
-• Admin Module (Student Search, Low Attendance, AI Chat)
+### Prerequisites
+- **Node.js** (v16+ recommended)
+- **Python** (3.8+)
+- **Git**
+- A **Groq API Key** for AI generation.
+- An **App Password** for your Gmail account to send automated emails.
 
-**Layer 2 — Backend API:**
-• Node.js + Express Server processing API requests and JWT authentication.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/SriLakshmiSoujanya/AttendInsights.git
+cd AttendInsights
+```
 
-**Layer 3 — Data Layer:**
-• Excel Datasets and JSON storage processed by Pandas and Express.
+### 2. Setup the Automated Email Engine (Python)
+The `Backend.py` file manages all scheduled AI communications.
 
-**Layer 4 — Automation & AI:**
-• Python background engine executing daily logic, communicating with Groq API + LLaMA for insight generation and smart email drafting. Power Automate triggers workflows via the `/run-now` endpoint.
+1. Install required Python packages:
+   ```bash
+   pip install flask pandas smtplib schedule python-dotenv groq openpyxl
+   ```
+2. Create a `.env` file in the root directory and add your credentials:
+   ```env
+   GROQ_API_KEY=your_groq_api_key_here
+   FROM_EMAIL=your_email@gmail.com
+   APP_PASSWORD=your_gmail_app_password
+   ```
+3. Ensure your data files (`attendance.xlsx` and `students.xlsx`) are placed in the root directory.
+4. Run the Python background worker:
+   ```bash
+   python Backend.py
+   ```
 
-**Layer 5 — Communication:**
-• Python SMTP system dispatching automated emails to students and mentors.
+### 3. Setup the Dashboard API Backend (Node.js)
+The `server.js` file handles the UI logic.
 
-## In Scope
-• Student/Admin role-based login via JWT.
-• Attendance analytics dashboards with Chart.js.
-• AI-generated attendance insights and chat interface.
-• Automated student + mentor email workflows.
-• Multi-flow threshold and streak alerts.
-• Web deployment.
+1. Install Node dependencies:
+   ```bash
+   npm install express cors jsonwebtoken axios dotenv
+   ```
+2. Start the Express server:
+   ```bash
+   node server.js
+   ```
+*(The API will be available on `http://localhost:5000`)*
 
-## Out of Scope
-• Biometric attendance capture.
-• RFID hardware.
-• Parent mobile application.
-• WhatsApp/SMS integration.
-• Full ERP integration (current phase).
+### 4. Setup the React Frontend
+The React application is located in the `frontend/` folder.
 
-## Future Enhancements
-• Live API integration.
-• Predictive AI attendance forecasting.
-• Parent dashboard.
-• ERP/LMS integration.
-• Mobile app deployment.
-• Multi-language AI communication.
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser and navigate to the URL provided by Vite (usually `http://localhost:5173/` or `5174`).
 
-## Conclusion
-AttendInsights establishes a scalable, AI-enhanced academic intelligence system by combining modern web development, workflow automation, and generative AI. Through React dashboards, Node.js APIs, Power Automate orchestration, and Groq + LLaMA intelligence, the platform modernizes attendance management into a proactive, personalized, and institution-ready solution.
+### 5. Accessing the Application
+Use the following demo credentials to log in:
+- **Admin**: `admin@institution.edu` / `admin123`
+- **Student**: Any valid student email from the dataset / `student123`
 
-## Project Type
-Education SaaS | Web Application | AI + Automation Platform
+---
+
+## 📅 Scheduled Tasks Integration
+The Python AI engine runs an internal scheduler (`schedule.every().day.at("09:00").do(daily_job)`). 
+Additionally, this system is designed to be triggered externally by **Power Automate**. By hitting the `/run-now` endpoint exposed by `Backend.py` (e.g., via an ngrok URL), Power Automate can synchronize daily data extraction from Teams or SharePoint and immediately trigger the AI email evaluation workflows.
+
+---
+
+## 🛠️ Technologies Used
+- **Frontend**: React 19, Vite, Chart.js, React-Router, Lucide-React, CSS Glassmorphism
+- **Backend API**: Node.js, Express, Axios
+- **AI Email Engine**: Python, Flask, Pandas, Schedule, Smtplib
+- **LLM Provider**: Groq API (Running `llama-3.3-70b-versatile`)
