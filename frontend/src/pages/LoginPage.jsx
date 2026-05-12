@@ -28,7 +28,6 @@ const LoginPage = ({ onLogin }) => {
       }
 
       if (res.data && res.data.success) {
-        localStorage.setItem('authToken', res.data.token);
         localStorage.setItem('currentUser', JSON.stringify(res.data.user));
         onLogin(res.data.user);
         

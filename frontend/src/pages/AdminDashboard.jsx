@@ -9,6 +9,7 @@ import Badge from '../components/ui/Badge';
 import Loader from '../components/ui/Loader';
 import { adminAPI } from '../api';
 import { Users, TrendingUp, AlertTriangle, LogOut, CheckCircle, Search, MessageSquare } from 'lucide-react';
+import styles from './AdminDashboard.module.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Filler);
 
@@ -17,6 +18,7 @@ const AdminDashboard = ({ user, onLogout }) => {
   const [stats, setStats] = useState(null);
   const [students, setStudents] = useState([]);
   const [lowAttendanceStudents, setLowAttendanceStudents] = useState([]);
+  const [branchAnalytics, setBranchAnalytics] = useState([]);
   
   // Student Analysis State
   const [searchRollNo, setSearchRollNo] = useState('');
@@ -49,6 +51,11 @@ const AdminDashboard = ({ user, onLogout }) => {
         if (lowRes.data.success) {
           setLowAttendanceStudents(lowRes.data.data);
         }
+
+        const branchRes = await adminAPI.getBranchAnalytics();
+        if (branchRes.data.success) {
+          setBranchAnalytics(branchRes.data.data);
+        }
       } catch (error) {
         console.error('Error fetching admin data', error);
       } finally {
@@ -64,7 +71,6 @@ const AdminDashboard = ({ user, onLogout }) => {
   }, [chatMessages]);
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     onLogout();
     navigate('/login');
@@ -128,36 +134,24 @@ const AdminDashboard = ({ user, onLogout }) => {
   };
 
   return (
-    <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '32px 20px', fontFamily: 'Inter, sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+    <div className={styles.container}>
+      <div className={styles.header}>
         <div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#1f2937', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h1 className={styles.title}>
             📊 Admin Dashboard
           </h1>
         </div>
-        <button onClick={handleLogout} style={{
-          background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid #fca5a5', padding: '8px 16px', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s'
-        }}>
+        <button onClick={handleLogout} className={styles.logoutBtn}>
           <LogOut size={16} /> Logout
         </button>
       </div>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '30px', flexWrap: 'wrap' }}>
-        {['overview', 'analysis', 'ai-assistant', 'low-attendance', 'all-students'].map(tab => (
+      <div className={styles.tabsContainer}>
+        {['overview', 'analysis', 'ai-assistant', 'low-attendance', 'branch-analytics', 'all-students'].map(tab => (
           <button 
             key={tab} 
             onClick={() => setActiveTab(tab)} 
-            style={{ 
-              padding: '10px 20px', 
-              background: activeTab === tab ? '#6366f1' : 'white', 
-              color: activeTab === tab ? 'white' : '#4b5563', 
-              border: '1px solid #e5e7eb', 
-              borderRadius: '8px', 
-              fontWeight: 600, 
-              cursor: 'pointer', 
-              textTransform: 'capitalize',
-              transition: 'all 0.2s'
-            }}>
+            className={`${styles.tabBtn} ${activeTab === tab ? styles.tabBtnActive : ''}`}>
             {tab.replace('-', ' ')}
           </button>
         ))}
@@ -165,26 +159,26 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       {activeTab === 'overview' && (
         <div className="animate-fade-in">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-            <div style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', padding: '24px', borderRadius: '12px', textAlign: 'center' }}>
-              <Users size={32} style={{ margin: '0 auto 10px', opacity: 0.8 }} />
-              <h3 style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '8px' }}>Total Students</h3>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{stats?.totalStudents || 0}</div>
+          <div className={styles.statsGrid}>
+            <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+              <Users size={32} className={styles.statIcon} />
+              <h3 className={styles.statLabel}>Total Students</h3>
+              <div className={styles.statValue}>{stats?.totalStudents || 0}</div>
             </div>
-            <div style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', color: 'white', padding: '24px', borderRadius: '12px', textAlign: 'center' }}>
-              <AlertTriangle size={32} style={{ margin: '0 auto 10px', opacity: 0.8 }} />
-              <h3 style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '8px' }}>Low Attendance (&lt;75%)</h3>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{stats?.lowAttendance || 0}</div>
+            <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
+              <AlertTriangle size={32} className={styles.statIcon} />
+              <h3 className={styles.statLabel}>Low Attendance (&lt;75%)</h3>
+              <div className={styles.statValue}>{stats?.lowAttendance || 0}</div>
             </div>
-            <div style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: 'white', padding: '24px', borderRadius: '12px', textAlign: 'center' }}>
-              <CheckCircle size={32} style={{ margin: '0 auto 10px', opacity: 0.8 }} />
-              <h3 style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '8px' }}>High Attendance (≥90%)</h3>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{stats?.highAttendance || 0}</div>
+            <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}>
+              <CheckCircle size={32} className={styles.statIcon} />
+              <h3 className={styles.statLabel}>High Attendance (≥90%)</h3>
+              <div className={styles.statValue}>{stats?.highAttendance || 0}</div>
             </div>
-            <div style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', color: 'white', padding: '24px', borderRadius: '12px', textAlign: 'center' }}>
-              <TrendingUp size={32} style={{ margin: '0 auto 10px', opacity: 0.8 }} />
-              <h3 style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '8px' }}>Average Attendance</h3>
-              <div style={{ fontSize: '2.5rem', fontWeight: 700 }}>{stats?.averageAttendance || 0}%</div>
+            <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' }}>
+              <TrendingUp size={32} className={styles.statIcon} />
+              <h3 className={styles.statLabel}>Average Attendance</h3>
+              <div className={styles.statValue}>{stats?.averageAttendance || 0}%</div>
             </div>
           </div>
         </div>
@@ -192,37 +186,37 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       {activeTab === 'analysis' && (
         <div className="animate-fade-in">
-          <Card style={{ marginBottom: '30px', padding: '24px' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1f2937', marginBottom: '20px' }}>🔍 Student Analysis</h2>
-            <div style={{ display: 'flex', gap: '10px' }}>
+          <Card className={styles.searchCard}>
+            <h2 className={styles.sectionTitle}>🔍 Student Analysis</h2>
+            <div className={styles.searchForm}>
               <input 
                 value={searchRollNo}
                 onChange={e => setSearchRollNo(e.target.value)}
                 onKeyPress={e => e.key === 'Enter' && handleSearchStudent()}
                 placeholder="Enter Student Roll Number..." 
-                style={{ flex: 1, padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '8px', fontSize: '1rem', outline: 'none' }} 
+                className={styles.searchInput}
               />
-              <button onClick={handleSearchStudent} style={{ background: '#6366f1', color: 'white', border: 'none', padding: '0 24px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}>Search Student</button>
+              <button onClick={handleSearchStudent} className={styles.searchBtn}>Search Student</button>
             </div>
-            {analysisError && <p style={{ color: '#ef4444', marginTop: '10px', fontWeight: 500 }}>❌ {analysisError}</p>}
+            {analysisError && <p className={styles.errorText}>❌ {analysisError}</p>}
           </Card>
 
           {analysisData && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '30px' }}>
-              <Card style={{ padding: '24px', gridColumn: '1 / -1' }}>
+            <div className={styles.analysisGrid}>
+              <Card className={styles.perfCard}>
                 <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Student Performance</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '15px' }}>
-                  <div style={{ background: '#f9fafb', padding: '15px', borderRadius: '8px', textAlign: 'center', border: '1px solid #e5e7eb' }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 700, color: '#6366f1', marginBottom: '5px' }}>{analysisData.overall.attendancePercentage.toFixed(1)}%</div>
-                    <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>Overall Attendance</div>
+                <div className={styles.perfStatsGrid}>
+                  <div className={styles.perfStatBox}>
+                    <div className={styles.perfStatValue} style={{ color: '#6366f1' }}>{analysisData.overall.attendancePercentage.toFixed(1)}%</div>
+                    <div className={styles.perfStatLabel}>Overall Attendance</div>
                   </div>
-                  <div style={{ background: '#f9fafb', padding: '15px', borderRadius: '8px', textAlign: 'center', border: '1px solid #e5e7eb' }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 700, color: '#10b981', marginBottom: '5px' }}>{analysisData.overall.attendedSessions}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>Sessions Attended</div>
+                  <div className={styles.perfStatBox}>
+                    <div className={styles.perfStatValue} style={{ color: '#10b981' }}>{analysisData.overall.attendedSessions}</div>
+                    <div className={styles.perfStatLabel}>Sessions Attended</div>
                   </div>
-                  <div style={{ background: '#f9fafb', padding: '15px', borderRadius: '8px', textAlign: 'center', border: '1px solid #e5e7eb' }}>
-                    <div style={{ fontSize: '2rem', fontWeight: 700, color: '#ef4444', marginBottom: '5px' }}>{analysisData.overall.totalSessions - analysisData.overall.attendedSessions}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>Sessions Missed</div>
+                  <div className={styles.perfStatBox}>
+                    <div className={styles.perfStatValue} style={{ color: '#ef4444' }}>{analysisData.overall.totalSessions - analysisData.overall.attendedSessions}</div>
+                    <div className={styles.perfStatLabel}>Sessions Missed</div>
                   </div>
                 </div>
               </Card>
@@ -246,20 +240,20 @@ const AdminDashboard = ({ user, onLogout }) => {
       )}
 
       {activeTab === 'ai-assistant' && (
-        <Card style={{ padding: '0', display: 'flex', flexDirection: 'column', height: '600px', overflow: 'hidden' }} className="animate-fade-in">
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid #e5e7eb', background: '#f9fafb' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1f2937', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+        <Card className={`${styles.aiChatCard} animate-fade-in`}>
+          <div className={styles.aiChatHeader}>
+            <h2 className={styles.aiChatTitle}>
               🤖 Admin AI Assistant
             </h2>
           </div>
-          <div style={{ flex: 1, overflowY: 'auto', padding: '20px', background: 'white' }}>
+          <div className={styles.chatMessages}>
             {chatMessages.map((msg, i) => (
-              <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexDirection: msg.sender === 'user' ? 'row-reverse' : 'row' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, background: msg.sender === 'ai' ? 'linear-gradient(135deg, #6366f1, #ec4899)' : 'linear-gradient(135deg, #10b981, #059669)', color: 'white' }}>
+              <div key={i} className={`${styles.chatMsgRow} ${msg.sender === 'user' ? styles.chatMsgRowUser : ''}`}>
+                <div className={`${styles.chatAvatar} ${msg.sender === 'ai' ? styles.chatAvatarAi : styles.chatAvatarUser}`}>
                   {msg.sender === 'ai' ? '🤖' : '👤'}
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '80%' }}>
-                  <div style={{ background: msg.sender === 'user' ? '#6366f1' : '#f3f4f6', color: msg.sender === 'user' ? 'white' : '#1f2937', padding: '12px 16px', borderRadius: '18px', fontSize: '0.9rem', lineHeight: 1.5, whiteSpace: 'pre-line' }}>
+                <div className={`${styles.chatBubbleWrap} ${msg.sender === 'ai' ? styles.chatBubbleWrapAi : styles.chatBubbleWrapUser}`}>
+                  <div className={`${styles.chatBubble} ${msg.sender === 'user' ? styles.chatBubbleUser : styles.chatBubbleAi}`}>
                     {msg.text}
                   </div>
                 </div>
@@ -267,21 +261,21 @@ const AdminDashboard = ({ user, onLogout }) => {
             ))}
             <div ref={chatEndRef} />
           </div>
-          <div style={{ padding: '16px', borderTop: '1px solid #e5e7eb', background: '#f9fafb' }}>
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '15px', flexWrap: 'wrap' }}>
-              <button onClick={() => sendChatMessage("How many students have low attendance?")} style={{ background: 'white', border: '1px solid #e5e7eb', padding: '6px 12px', borderRadius: '16px', fontSize: '0.8rem', cursor: 'pointer', color: '#4b5563' }}>Low Attendance</button>
-              <button onClick={() => sendChatMessage("What is the average attendance?")} style={{ background: 'white', border: '1px solid #e5e7eb', padding: '6px 12px', borderRadius: '16px', fontSize: '0.8rem', cursor: 'pointer', color: '#4b5563' }}>Average Attendance</button>
-              <button onClick={() => sendChatMessage("Which students need intervention?")} style={{ background: 'white', border: '1px solid #e5e7eb', padding: '6px 12px', borderRadius: '16px', fontSize: '0.8rem', cursor: 'pointer', color: '#4b5563' }}>At-Risk Students</button>
+          <div className={styles.chatInputArea}>
+            <div className={styles.chatPromptBtns}>
+              <button onClick={() => sendChatMessage("How many students have low attendance?")} className={styles.chatPromptBtn}>Low Attendance</button>
+              <button onClick={() => sendChatMessage("What is the average attendance?")} className={styles.chatPromptBtn}>Average Attendance</button>
+              <button onClick={() => sendChatMessage("Which students need intervention?")} className={styles.chatPromptBtn}>At-Risk Students</button>
             </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div className={styles.chatInputForm}>
               <input 
                 value={chatInput}
                 onChange={e => setChatInput(e.target.value)}
                 onKeyPress={e => e.key === 'Enter' && sendChatMessage()}
                 placeholder="Ask about a student or trends..." 
-                style={{ flex: 1, padding: '12px 16px', border: '2px solid #e5e7eb', borderRadius: '24px', fontSize: '0.9rem', outline: 'none' }} 
+                className={styles.chatInput}
               />
-              <button onClick={() => sendChatMessage()} style={{ background: '#6366f1', color: 'white', border: 'none', padding: '0 24px', borderRadius: '24px', fontWeight: 600, cursor: 'pointer' }}>Send</button>
+              <button onClick={() => sendChatMessage()} className={styles.chatSendBtn}>Send</button>
             </div>
           </div>
         </Card>
@@ -289,7 +283,7 @@ const AdminDashboard = ({ user, onLogout }) => {
 
       {activeTab === 'low-attendance' && (
         <Card className="animate-fade-in">
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1f2937', marginBottom: '20px' }}>⚠️ Students with Low Attendance</h2>
+          <h2 className={styles.sectionTitle}>⚠️ Students with Low Attendance</h2>
           <div className="table-container">
             <table className="premium-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
               <thead>
@@ -317,9 +311,41 @@ const AdminDashboard = ({ user, onLogout }) => {
         </Card>
       )}
 
+      {activeTab === 'branch-analytics' && (
+        <Card className="animate-fade-in">
+          <h2 className={styles.sectionTitle}>🏢 Branch-Wise Analytics</h2>
+          <div className="table-container">
+            <table className="premium-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
+                  <th style={{ padding: '15px' }}>Branch</th>
+                  <th style={{ padding: '15px' }}>Total Students</th>
+                  <th style={{ padding: '15px' }}>Average Attendance %</th>
+                  <th style={{ padding: '15px' }}>Low Attendance (&lt;75%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {branchAnalytics.length > 0 ? branchAnalytics.map(b => (
+                  <tr key={b.branch} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                    <td style={{ padding: '12px 15px', fontWeight: 600 }}>{b.branch}</td>
+                    <td style={{ padding: '12px 15px' }}>{b.totalStudents}</td>
+                    <td style={{ padding: '12px 15px' }}>
+                      <Badge status={b.averageAttendance >= 75 ? 'good' : 'critical'}>
+                        {b.averageAttendance}%
+                      </Badge>
+                    </td>
+                    <td style={{ padding: '12px 15px', color: '#ef4444', fontWeight: 600 }}>{b.lowAttendanceStudents}</td>
+                  </tr>
+                )) : <tr><td colSpan="4" style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>No branch data available.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      )}
+
       {activeTab === 'all-students' && (
         <Card className="animate-fade-in">
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1f2937', marginBottom: '20px' }}>📋 All Students Attendance</h2>
+          <h2 className={styles.sectionTitle}>📋 All Students Attendance</h2>
           <div className="table-container">
             <table className="premium-table" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
               <thead>

@@ -13,6 +13,11 @@ from email.mime.multipart import MIMEMultipart
 from groq import Groq
 from collections import Counter
 from datetime import datetime, date
+import logging
+import traceback
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -88,8 +93,11 @@ def send_email(to_email, subject, body):
             s.send_message(msg)
         print(f"  Email sent → {to_email}")
         return True
+    except smtplib.SMTPException as e:
+        logger.error(f"  SMTP Error → {to_email} | {e}")
+        return False
     except Exception as e:
-        print(f"  Email failed → {to_email} | {e}")
+        logger.error(f"  Email failed → {to_email} | {e}")
         return False
 
 # ── AI EMAIL GENERATOR ─────────────────────────────────────
@@ -141,8 +149,11 @@ Maximum 80 words.
         print(f"  Flow2: {name} | {pct:.1f}% | {etype} | sent={result}")
         return {"name": name, "type": etype, "sent": result}
 
+    except (ValueError, KeyError) as e:
+        logger.error(f"  Flow2 data error: {e}")
+        return None
     except Exception as e:
-        print(f"  Flow2 error: {e}")
+        logger.error(f"  Flow2 general error: {e}", exc_info=True)
         return None
 
 # ══════════════════════════════════════════════════════════
@@ -224,8 +235,11 @@ Maximum 80 words.
         print(f"  Flow3: {name} | current streak={streak} days | no alert")
         return None
 
+    except (KeyError, IndexError) as e:
+        logger.error(f"  Flow3 data error: {e}")
+        return None
     except Exception as e:
-        print(f"  Flow3 error: {e}")
+        logger.error(f"  Flow3 general error: {e}", exc_info=True)
         return None
 
 # ══════════════════════════════════════════════════════════
@@ -290,8 +304,11 @@ Maximum 80 words.
 
         return None
 
+    except (KeyError, IndexError, ValueError) as e:
+        logger.error(f"  Flow4 data error: {e}")
+        return None
     except Exception as e:
-        print(f"  Flow4 error: {e}")
+        logger.error(f"  Flow4 general error: {e}", exc_info=True)
         return None
 
 # ══════════════════════════════════════════════════════════
@@ -328,8 +345,10 @@ Sign off as: T-Hub AI System
         send_email(MENTOR_EMAIL, subject, body)
         print(f"  Flow5: Daily report sent | {len(today_absent)} absent today")
 
+    except KeyError as e:
+        logger.error(f"  Flow5 data error: {e}")
     except Exception as e:
-        print(f"  Flow5 error: {e}")
+        logger.error(f"  Flow5 general error: {e}", exc_info=True)
 
 # ══════════════════════════════════════════════════════════
 # MAIN DAILY JOB — runs automatically every session day
@@ -381,7 +400,7 @@ def daily_job():
         print("="*60)
 
     except Exception as e:
-        print(f"ERROR in daily job: {e}")
+        logger.error(f"ERROR in daily job: {e}", exc_info=True)
 
 # ── API ENDPOINTS ──────────────────────────────────────────
 @app.route("/status", methods=["GET"])
@@ -414,7 +433,8 @@ def check_data():
             "todays_col":       col
         })
     except Exception as e:
-        return jsonify({"error": str(e)})
+        logger.error(f"check_data error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 # ── SCHEDULER ─────────────────────────────────────────────
 def start_scheduler():

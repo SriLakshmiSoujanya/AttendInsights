@@ -2,14 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api', // Point to server.js running on port 5000
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true // Important for sending/receiving httpOnly cookies
 });
 
 export const authAPI = {
@@ -25,6 +18,7 @@ export const adminAPI = {
   getDashboard: () => api.get('/admin/dashboard'),
   getLowAttendance: () => api.get('/admin/low-attendance'),
   getStudentChart: (rollNo) => api.get(`/admin/student/chart/${rollNo}`),
+  getBranchAnalytics: () => api.get('/admin/branch-analytics'),
   chat: (question, rollNo) => api.post('/admin/ai/chat', { question, rollNo })
 };
 
